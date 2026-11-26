@@ -1,0 +1,22 @@
+{
+  "name": "@saleba/design",
+  "version": "0.1.0",
+  "description": "Saleba design tokens for the web: DTCG tokens, CSS custom properties and a Tailwind CSS v4 theme.",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mady-Code/saleba_design.git"
+  },
+  "files": [
+    "tokens/tokens.json",
+    "web/saleba-tokens.css",
+    "web/saleba-tailwind.css"
+  ],
+  "exports": {
+    "./tokens.json": "./tokens/tokens.json",
+    "./tokens.css": "./web/saleba-tokens.css",
+    "./tailwind.css": "./web/saleba-tailwind.css"
+  },
+  "style": "./web/saleba-tokens.css"
+}

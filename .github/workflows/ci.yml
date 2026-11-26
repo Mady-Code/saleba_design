@@ -1,0 +1,41 @@
+# CI de saleba_design : les sorties générées doivent être à jour avec tokens/tokens.json,
+# le paquet Flutter doit passer l'analyse et les tests.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  flutter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: flutter
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer Flutter (version de .fvmrc)
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+
+      - name: Dépendances
+        run: flutter pub get
+
+      - name: Format
+        # saleba_tokens.dart est généré : seul generated_test.dart le vérifie.
+        run: dart format --output=none --set-exit-if-changed --line-length 110 $(find lib test tool -name "*.dart" ! -name saleba_tokens.dart)
+
+      - name: Analyse statique
+        run: flutter analyze
+
+      - name: Tests (sorties générées à jour, contrastes, thèmes)
+        run: flutter test --reporter expanded
